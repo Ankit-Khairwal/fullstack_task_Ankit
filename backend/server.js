@@ -11,7 +11,7 @@ app.use(express.json());
 
 // MongoDB setup - using local MongoDB
 const mongoUri = "mongodb://localhost:27017";
-const dbName = "noteapp";
+const dbName = "noteapp"; 
 const collectionName = "notes";
 const mongoClient = new MongoClient(mongoUri);
 

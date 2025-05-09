@@ -1,34 +1,46 @@
+// Load environment variables
+require('dotenv').config();
+
 const express = require("express");
 const { MongoClient } = require("mongodb");
 const cors = require("cors");
 
 const app = express();
-const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// MongoDB setup - using local MongoDB
-const mongoUri = "mongodb://localhost:27017";
-const dbName = "noteapp"; 
-const collectionName = "notes";
+// Read from environment variables
+const port = process.env.PORT || 5000;
+const mongoUri = process.env.MONGODB_URI;
+const dbName = process.env.MONGODB_DB;
+const collectionName = process.env.MONGODB_COLLECTION;
+
+// Debug check for URI
+if (!mongoUri) {
+  console.error("❌ MONGODB_URI is undefined. Please check your .env file.");
+  process.exit(1);
+}
+
 const mongoClient = new MongoClient(mongoUri);
 
 // Connect to MongoDB
 (async () => {
   try {
     await mongoClient.connect();
-    console.log("Connected to MongoDB");
+    console.log("✅ Connected to MongoDB");
   } catch (error) {
-    console.error("MongoDB connection error:", error);
+    console.error("❌ MongoDB connection error:", error);
+    process.exit(1); // Exit if MongoDB fails
   }
 })();
 
-// HTTP endpoints
+// Routes
 app.get("/head", (req, res) => {
   res.send("Welcome to the Note App API");
 });
+
 app.post("/addTask", async (req, res) => {
   try {
     const { task } = req.body;
@@ -47,6 +59,7 @@ app.post("/addTask", async (req, res) => {
   }
 });
 
+
 app.get("/fetchAllTasks", async (req, res) => {
   try {
     const db = mongoClient.db(dbName);
@@ -62,5 +75,5 @@ app.get("/fetchAllTasks", async (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`🚀 Server running on port ${port}`);
 });

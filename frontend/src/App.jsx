@@ -23,7 +23,7 @@ function App() {
   const fetchAllTasks = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/fetchAllTasks");
+      const response = await fetch("https://fullstack-task-ankit.onrender.com/fetchAllTasks");
       if (!response.ok) {
         throw new Error("Failed to fetch tasks");
       }
@@ -43,7 +43,7 @@ function App() {
     if (!newNote.trim()) return;
 
     try {
-      const response = await fetch("http://localhost:5000/addTask", {
+      const response = await fetch("https://fullstack-task-ankit.onrender.com/addTask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

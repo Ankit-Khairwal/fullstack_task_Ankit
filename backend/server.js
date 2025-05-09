@@ -26,6 +26,9 @@ const mongoClient = new MongoClient(mongoUri);
 })();
 
 // HTTP endpoints
+app.get("/head", (req, res) => {
+  res.send("Welcome to the Note App API");
+});
 app.post("/addTask", async (req, res) => {
   try {
     const { task } = req.body;
